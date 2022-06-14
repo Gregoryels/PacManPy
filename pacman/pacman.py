@@ -8,8 +8,9 @@ class Pacman:
         self.radios = radios
         self.color = colors.Colors().yellow
 
-        self.x_velocity = 0
-        self.y_velocity = 0
+        self.x_vel = 0
+        self.y_vel = 0
+        self.vel_mult = 0.1
         self.direction = 'R'
         self.open_mouth = True
 
@@ -33,3 +34,26 @@ class Pacman:
                 mouth_corner_2 = (int(self.x_center - self.radios), int(self.y_center + self.radios))
             mouth = [mouth_center, mouth_corner_1, mouth_corner_2]
             pygame.draw.polygon(screen, colors.Colors().black, mouth, 0)
+
+    def move(self, screen):
+        if self.x_center + self.radios >= screen.get_width():
+            self.x_vel *= -1
+            self.direction = 'L'
+        elif self.x_center - self.radios <= 0:
+            self.x_vel *= -1
+            self.direction = 'R'
+
+        if self.y_center + self.radios >= screen.get_height():
+            self.y_vel *= -1
+            self.direction = 'U'
+        elif self.y_center - self.radios <= 0:
+            self.y_vel *= -1
+            self.direction = 'D'
+
+        self.x_center += (self.x_vel*self.vel_mult)
+        self.y_center += (self.y_vel*self.vel_mult)
+
+    def set_direction(self, direction):
+        dict_directions = {'L': (-1, 0), 'U': (0, -1), 'R': (1, 0), 'D': (0, 1)}
+        self.direction = direction
+        self.x_vel, self.y_vel = dict_directions[direction]
