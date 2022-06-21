@@ -2,15 +2,16 @@ from colors import colors
 import pygame
 
 class Pacman:
-    def __init__(self, screen, radios):
-        self.x_center = int(0.2*screen.get_width())
-        self.y_center = int(0.8*screen.get_height())
+    def __init__(self, radios):
         self.radios = radios
+        self.cell_size = 2*radios
+        self.x_center = self.cell_size + self.radios
+        self.y_center = self.cell_size + self.radios
+
         self.color = colors.Colors().yellow
 
         self.x_vel = 0
         self.y_vel = 0
-        self.vel_mult = 0.1
         self.direction = 'R'
         self.open_mouth = True
 
@@ -50,8 +51,8 @@ class Pacman:
             self.y_vel *= -1
             self.direction = 'D'
 
-        self.x_center += (self.x_vel*self.vel_mult)
-        self.y_center += (self.y_vel*self.vel_mult)
+        self.x_center += (self.x_vel*self.cell_size)
+        self.y_center += (self.y_vel*self.cell_size)
 
     def set_direction(self, direction):
         dict_directions = {'L': (-1, 0), 'U': (0, -1), 'R': (1, 0), 'D': (0, 1)}
